@@ -1,6 +1,6 @@
 const fs = require("fs")
 
-const jsonPath = __dirname + "/../data/seats.json"
+const jsonPath = __dirname + "/../data/newFile.json"
 
 function readDashboard() {
     return new Promise((resolve, reject) => {

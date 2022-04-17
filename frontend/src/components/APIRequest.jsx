@@ -8,6 +8,7 @@ const APIrequest = (props) => {
     // const [counterUpper, setCounterUpper] = useState(0)
     const [bookedSeatsArr, setBookedSeatsArr] = useState([])
     const [newBookings, setNewBookings] = useState([])
+    // const [newObj, setNewObj] = useState({ category: "", price: "", booked: "", seat: "" })
     const [total, setTotal] = useState(0)
     // const [seatNum, setSeatNum] = useState("")
     // const [error, setError] = useState(null)
@@ -28,7 +29,24 @@ const APIrequest = (props) => {
         else {
             props.setCounterUpper(props.counterUpper + 1)
         }
+
+
     }
+    const handleSaveToArr = (e) => {
+        console.log(e.target.textContent)
+        setNewBookings(e.target.textContent)
+        fetch("http://localhost:8400/updatedSeats", {
+            headers: { "Content-Type": "application/json" },
+            method: "POST",
+            body: JSON.stringify({ category: newBookings })
+        }).then((response) => response.json())
+            .then((newSeatsArr) => setBookedSeatsArr(newSeatsArr))
+        console.log(bookedSeatsArr)
+
+    }
+    console.log(newBookings)
+
+
 
 
 
@@ -48,7 +66,8 @@ const APIrequest = (props) => {
     //         body: JSON.stringify(newBookings)
     //     }).then((response) => response.json())
     //         .then((newSeatsArr) => setBookedSeatsArr(newSeatsArr))
-    // }, [counterUpper, counterLower])
+    //     console.log(bookedSeatsArr)
+    // }, [])
 
 
 
@@ -68,6 +87,7 @@ const APIrequest = (props) => {
                         return (
                             <div key={seat.index}
                                 className={(seat.index) > 12 ? "colorUpper" : "colorLower"}>
+                                <div onClick={(e) => handleSaveToArr(e)} className="hidden">{seat.category}, {seat.price}, {seat.booked}, {seat.index}</div>
                                 <figure>
                                     <h4 onClick={(e) => handleClick(e)} className="seatround">{seat.index}</h4>
                                 </figure>

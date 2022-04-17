@@ -7,7 +7,10 @@ dotenv.config()
 
 const multer = require("multer")
 
+const bodyParser = require("body-parser")
+
 const cors = require("cors")
+
 const { body, validationResult } = require("express-validator")
 
 const { readDashboard, writeDashboard } = require("./dashboard.js")
@@ -22,6 +25,8 @@ const api_key = process.env.API_CINEMA_KEY
 console.log("your API key", api_key)
 
 app.use(cors())
+app.use(express.json())
+app.use(bodyParser.json());
 
 app.use((req, _, next) => {
     console.log("new request –", req.method, req.url)
@@ -58,14 +63,22 @@ app.get("/cinemaseats", (req, res) => {
 )
 
 app.post("/updatedSeats", (req, res) => {
-    console.log(req.body)
-    const bookedSeats = {
-        upperSeats: req.body.counterUpper,
-        lowerSeats: req.body.counterLower
+    const booked = {
+        id: nanoid,
+        category: req.body.category
     }
-    seatsArr.push(bookedSeats)
-    res.json(seatsArr)
+    readDashboard()
+        .then(dahboardData => {
+            const newSeatsArr = [...dashboardData, booked]
+            return newSeatsArr
+        })
+        .then((newSeatsArr) => writeDashboard(newSeatsArr))
+        .then((writenSeatsArr) => res.json(writenSeatsArr))
+        .catch(_ => res.status(500).json({ err: "Unknown err while reading/writing - md" }))
+
+
 })
+console.log("seatsArr", seatsArr)
 
 
 //middleware test

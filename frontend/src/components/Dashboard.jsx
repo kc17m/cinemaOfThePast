@@ -8,7 +8,6 @@ const Dashboard = (props) => {
 
     return (
         <>
-
             <h2>Host's Dashboard</h2>
             <section className="dashboard">
                 <div>    <h2>Available Seats: </h2>

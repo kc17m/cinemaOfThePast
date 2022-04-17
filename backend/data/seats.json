@@ -142,5 +142,8 @@
         "category": "lowerclass",
         "price": "10",
         "booked": "false"
+    },
+    {
+        "category": []
     }
 ]
